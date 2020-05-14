@@ -10,9 +10,18 @@ class User(AbstractUser):
 
 # class Dean(models.Model):
 class Request(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255,null=False,blank=False)
+
+    def __str__(self):
+        return self.title
+
+    '''def get_absolute_url(self):
+        return reversed()'''
 
 
 class Club(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    requests = models.ManyToManyField(Request, related_name='requests')
+    requests = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='requests')
+
+    def __str__(self):
+        return self.user
