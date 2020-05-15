@@ -21,7 +21,8 @@ class Request(models.Model):
 
 class Club(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    requests = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='requests')
+    requests = models.ForeignKey(Request, on_delete=models.CASCADE, related_name='requests',null=True)
 
     def __str__(self):
         return self.user
+
