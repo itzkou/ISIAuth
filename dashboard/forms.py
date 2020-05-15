@@ -4,6 +4,19 @@ from django.db import transaction
 from dashboard.models import User, Club
 
 
+class DeanSignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+
+    # standard save overriding
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_dean = True
+        if commit:
+            user.save()
+        return user
+
+
 class ClubSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
@@ -14,5 +27,5 @@ class ClubSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_club = True  # setting the flag
         user.save()  # saving
-        club = Club.objects.create(user=user)
+        club = Club.objects.create(user=user)  # django orm -> creating club profile to save extra fields
         return user
