@@ -3,10 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.views.generic import TemplateView, CreateView
-
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
 from dashboard.forms import ClubSignUpForm, DeanSignUpForm
-from dashboard.models import User
+from dashboard.models import User, Request
 
 
 class SignUpView(TemplateView):
@@ -48,7 +47,33 @@ class DeanSignUpView(CreateView):
     def get_context_data(self, **kwargs):
         kwargs['user_type'] = 'staff'
         return super().get_context_data(**kwargs)
+
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
         return redirect('home')
+
+
+class RequestCreateView(CreateView):
+    model = Request
+    template_name = 'request_create.html'
+    fields = ('owner',
+              'date',
+              'hour',
+              'needs',
+              'domain',
+              'title',
+              'description')
+
+class RequestDetailView(DetailView):
+    model = Request
+    template_name = 'request_detail.html'
+    context_object_name = 'request'
+
+class RequestUpdateView(UpdateView):
+    model = Request
+    template_name = 'request_update.html'
+
+class RequestDeleteView(UpdateView):
+    model = Request
+    template_name = 'request_delete.html.html'
