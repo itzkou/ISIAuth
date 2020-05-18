@@ -1,9 +1,9 @@
 from django.contrib.auth import login
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 # Create your views here.
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
+
 from dashboard.forms import ClubSignUpForm, DeanSignUpForm
 from dashboard.models import User, Request
 
@@ -53,6 +53,10 @@ class DeanSignUpView(CreateView):
         login(self.request, user)
         return redirect('home')
 
+class RequestListView(ListView):
+    model = Request
+    template_name = 'request_list.html'
+    context_object_name = 'requests'
 
 class RequestCreateView(CreateView):
     model = Request
@@ -74,6 +78,6 @@ class RequestUpdateView(UpdateView):
     model = Request
     template_name = 'request_update.html'
 
-class RequestDeleteView(UpdateView):
+class RequestDeleteView(DeleteView):
     model = Request
     template_name = 'request_delete.html.html'
