@@ -1,4 +1,6 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
@@ -14,10 +16,10 @@ class SignUpView(TemplateView):
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.is_club:
-            return HttpResponse('hi club')
+        if request.user.is_dean:
+            return render(request, 'request_change_list.html')
         else:
-            return HttpResponse('hi dean')
+            return render(request, 'request_list.html')
     return render(request, 'home.html')
 
 
@@ -53,12 +55,27 @@ class DeanSignUpView(CreateView):
         login(self.request, user)
         return redirect('home')
 
-class RequestListView(ListView):
+#TODO  student decorator , dean decorator
+class RequestListView(LoginRequiredMixin, ListView):
     model = Request
     template_name = 'request_list.html'
     context_object_name = 'requests'
+    login_url = 'login'
 
-class RequestCreateView(CreateView):
+    def get_queryset(self):  # we use  query to filter or design the result of a view
+        return Request.objects.filter(
+            owner=self.request.user
+        )
+
+
+class RequestDeanView(LoginRequiredMixin, ListView):
+    model = Request
+    template_name = 'request_change_list.html'
+    context_object_name = 'club_requests'
+    login_url = 'login'
+
+
+class RequestCreateView(LoginRequiredMixin, CreateView):
     model = Request
     template_name = 'request_create.html'
     fields = ('owner',
@@ -68,16 +85,23 @@ class RequestCreateView(CreateView):
               'domain',
               'title',
               'description')
+    login_url = 'login'
 
-class RequestDetailView(DetailView):
+
+class RequestDetailView(LoginRequiredMixin, DetailView):
     model = Request
     template_name = 'request_detail.html'
     context_object_name = 'request'
+    login_url = 'login'
 
-class RequestUpdateView(UpdateView):
+
+class RequestUpdateView(LoginRequiredMixin, UpdateView):
     model = Request
     template_name = 'request_update.html'
+    login_url = 'login'
 
-class RequestDeleteView(DeleteView):
+
+class RequestDeleteView(LoginRequiredMixin, DeleteView):
     model = Request
     template_name = 'request_delete.html.html'
+    login_url = 'login'
