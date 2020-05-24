@@ -13,11 +13,11 @@ from dashboard.models import User, Request
 class SignUpView(TemplateView):
     template_name = 'registration/signup.html'
 
-
+#TODO solve the list of requests
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_dean:
-            return render(request, 'request_change_list.html')
+            return render(request, 'requests_change.html')
         else:
             return render(request, 'request_list.html')
     return render(request, 'home.html')
@@ -75,14 +75,20 @@ class RequestListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         )
 
 
-class RequestDeanView(LoginRequiredMixin, ListView):
+class RequestDeanView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Request
-    template_name = 'request_change_list.html'
+    template_name = 'requests_change.html'
     context_object_name = 'club_requests'
     login_url = 'login'
 
+    def test_func(self):
+        if self.request.user.is_dean:
+            return True
+        else:
+            return False
 
-class RequestCreateView(LoginRequiredMixin, CreateView):
+
+class RequestCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Request
     template_name = 'request_create.html'
     fields = ('owner',
@@ -93,6 +99,12 @@ class RequestCreateView(LoginRequiredMixin, CreateView):
               'title',
               'description')
     login_url = 'login'
+
+    def test_func(self):
+        if self.request.user.is_club:
+            return True
+        else:
+            return False
 
 
 class RequestDetailView(LoginRequiredMixin, DetailView):
