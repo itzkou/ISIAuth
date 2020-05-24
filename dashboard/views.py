@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -55,12 +55,19 @@ class DeanSignUpView(CreateView):
         login(self.request, user)
         return redirect('home')
 
-#TODO  student decorator , dean decorator
-class RequestListView(LoginRequiredMixin, ListView):
+
+# TODO  student decorator , dean decorator
+class RequestListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Request
     template_name = 'request_list.html'
     context_object_name = 'requests'
     login_url = 'login'
+
+    def test_func(self):
+        if self.request.user.is_club:
+            return True
+        else:
+            return False
 
     def get_queryset(self):  # we use  query to filter or design the result of a view
         return Request.objects.filter(
