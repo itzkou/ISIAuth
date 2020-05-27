@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+    <div class="card">
+        <table class="table mb-0">
+            <thead>
+            <tr>
+                <th>Request</th>
+                <th>Title</th>
+                <th>Status</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for request in club_requests %}
+                <tr>
+                    <td class="align-middle">{{ request.owner }}</td>
+                    <td class="align-middle">{{ request.title }}</td>
+                    <td class="align-middle"><span class="badge badge-primary" style="background-color: #007bff">{{ request.status }}</span></td>
+
+                </tr>
+            {% empty %}
+                <tr>
+                    <td class="bg-light text-center font-italic" colspan="4">No event requests right now.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

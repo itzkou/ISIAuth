@@ -9,8 +9,8 @@ urlpatterns = [
     path('requests/',RequestListView.as_view(),name='request_list'),
     path('requests_change/',RequestDeanView.as_view(),name='requests_change'),
     path('request/new/',RequestCreateView.as_view(),name='request_create'),
-    path('request/<int:pk>/', RequestDetailView.as_view(), name='request_create'),
-    path('request/edit/<int:pk>/', RequestUpdateView.as_view(), name='request_create'),
-    path('request/delete/<int:pk>/', RequestDeleteView.as_view(), name='request_create'),
+    path('request/<int:pk>/', RequestDetailView.as_view(), name='request_detail'),
+    path('request/edit/<int:pk>/', RequestUpdateView.as_view(), name='request_update'),
+    path('request/delete/<int:pk>/', RequestDeleteView.as_view(), name='request_delete'),
 
 ]
