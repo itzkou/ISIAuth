@@ -14,10 +14,13 @@
             </thead>
             <tbody>
             {% for request in club_requests %}
-                <tr>
+                <tr class='clickable-row' data-href="{% url 'request_detail' request.pk %}">
                     <td class="align-middle">{{ request.owner }}</td>
                     <td class="align-middle">{{ request.title }}</td>
-                    <td class="align-middle"><span class="badge badge-primary" style="background-color: #007bff">{{ request.status }}</span></td>
+                    <td class="align-middle"><span class="badge badge-primary"
+                                                   style="background-color: #007bff">{{ request.status }}</span></td>
+                    <td><a href="{% url 'dean_update' request.pk %}">Edit</a> |
+                        <a href="{% url 'dean_delete' request.pk %}">Delete</a></td>
 
                 </tr>
             {% empty %}

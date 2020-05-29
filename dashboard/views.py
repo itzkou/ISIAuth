@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, DeleteView, ListView
 
 from dashboard.forms import ClubSignUpForm, DeanSignUpForm
@@ -71,7 +72,7 @@ class RequestListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def get_queryset(self):  # we use  query to filter or design the result of a view
         return Request.objects.filter(
             owner=self.request.user
-        )
+        ).order_by('date') #order by request(django) date
 
 
 class RequestDeanView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -90,13 +91,13 @@ class RequestDeanView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 class RequestCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Request
     template_name = 'request_create.html'
-    fields = ('owner',
-              'date',
-              'hour',
-              'needs',
-              'domain',
-              'title',
-              'description')
+    fields = (
+        'date',
+        'hour',
+        'needs',
+        'domain',
+        'title',
+        'description')
     login_url = 'login'
 
     def test_func(self):
@@ -104,6 +105,10 @@ class RequestCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
             return True
         else:
             return False
+
+    def form_valid(self, form):  #This method is called when valid form data has been POSTed , u can add modifications by overriding it
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class RequestDetailView(LoginRequiredMixin, DetailView):
@@ -117,9 +122,23 @@ class RequestUpdateView(LoginRequiredMixin, UpdateView):
     model = Request
     template_name = 'request_update.html'
     login_url = 'login'
-    fields = ('date', 'hour','needs','domain','title','description')
+    fields = ('date', 'hour', 'needs', 'domain', 'title', 'description')
+
 
 class RequestDeleteView(LoginRequiredMixin, DeleteView):
     model = Request
     template_name = 'request_delete.html'
     login_url = 'login'
+    success_url = reverse_lazy('request_list')
+
+class RequestDeleteDView(LoginRequiredMixin, DeleteView):
+    model = Request
+    template_name = 'dean_delete.html'
+    login_url = 'login'
+    success_url = reverse_lazy('requests_change')
+#TODO solve out the specific field issue
+class RequestUpdateDView(LoginRequiredMixin, UpdateView):
+    model = Request
+    template_name = 'dean_update.html'
+    login_url = 'login'
+

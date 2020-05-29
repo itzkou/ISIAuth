@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{%  block content %}
+    <div >
+    <h2> {{request.title }}</h2>
+    <p>{{ request.description }}</p>
+    </div>
 
-</body>
-</html>
+{% endblock content %}

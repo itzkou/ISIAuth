@@ -4,8 +4,10 @@ import django
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 # Create your models here.
+from django.urls import reverse
+
+
 class User(AbstractUser):
     is_club = models.BooleanField(default=False)
     is_dean = models.BooleanField(default=False)
@@ -27,9 +29,8 @@ class Request(models.Model):
     def __str__(self):
         return self.title
 
-    # TODO
-    '''def get_absolute_url(self):
-        return reversed()'''
+    def get_absolute_url(self):
+        return reverse('request_detail',args=[str(self.id)])
 
 
 class Club(models.Model):

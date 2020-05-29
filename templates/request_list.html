@@ -6,8 +6,8 @@
         <table class="table mb-0">
             <thead>
             <tr>
-                <th>Request</th>
                 <th>Title</th>
+                <th>Date</th>
                 <th>Status</th>
 
             </tr>
@@ -15,8 +15,8 @@
             <tbody>
             {% for request in requests %}
                 <tr class='clickable-row' data-href="{% url 'request_detail' request.pk %}">
-                    <td class="align-middle">{{ request.owner }}</td>
                     <td class="align-middle">{{ request.title }}</td>
+                    <td class="align-middle">{{ request.date }}</td>
                     <td class="align-middle"><span class="badge badge-primary"
                                                    style="background-color: #007bff">{{ request.status }}</span></td>
                     <td><a href="{% url 'request_update' request.pk %}">Edit</a> |
