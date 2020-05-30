@@ -4,7 +4,7 @@ from django.db import transaction
 from dashboard.models import User, Club
 
 
-#forms.py is where the django documentation recommends you place all your forms code;
+# forms.py is where the django documentation recommends you place all your forms code;
 
 class DeanSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

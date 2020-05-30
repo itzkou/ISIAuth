@@ -22,13 +22,11 @@ class Request(models.Model):
     description = models.TextField(max_length=300)
     status = models.BooleanField(default=False)
 
-
-
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('request_detail',args=[str(self.id)])
+        return reverse('request_detail', args=[str(self.id)])
 
 
 class Club(models.Model):

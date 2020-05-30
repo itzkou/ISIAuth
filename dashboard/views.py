@@ -138,7 +138,7 @@ class RequestDeleteDView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('requests_change')
 
 
-class RequestUpdateDView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
+class RequestUpdateDView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Request
     template_name = 'dean_update.html'
     login_url = 'login'
