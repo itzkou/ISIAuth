@@ -13,6 +13,6 @@ urlpatterns = [
     path('request/edit/<int:pk>/', RequestUpdateView.as_view(), name='request_update'),
     path('request/delete/<int:pk>/', RequestDeleteView.as_view(), name='request_delete'),
     path('request/dean_delete/<int:pk>/',RequestDeleteDView.as_view(),name='dean_delete'),  #URL must be unique!
-    path('request/edit/<int:pk>/', RequestUpdateDView.as_view(), name='dean_update'),
+    path('request/dean_edit/<int:pk>/', RequestUpdateDView.as_view(), name='dean_update'),
 
 ]

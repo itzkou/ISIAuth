@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse_lazy
@@ -72,7 +72,7 @@ class RequestListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def get_queryset(self):  # we use  query to filter or design the result of a view
         return Request.objects.filter(
             owner=self.request.user
-        ).order_by('date') #order by request(django) date
+        ).order_by('date')  # order by request(django) date
 
 
 class RequestDeanView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -106,7 +106,8 @@ class RequestCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         else:
             return False
 
-    def form_valid(self, form):  #This method is called when valid form data has been POSTed , u can add modifications by overriding it
+    def form_valid(self,
+                   form):  # This method is called when valid form data has been POSTed , u can add modifications by overriding it
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
@@ -131,14 +132,19 @@ class RequestDeleteView(LoginRequiredMixin, DeleteView):
     login_url = 'login'
     success_url = reverse_lazy('request_list')
 
+
 class RequestDeleteDView(LoginRequiredMixin, DeleteView):
     model = Request
     template_name = 'dean_delete.html'
     login_url = 'login'
     success_url = reverse_lazy('requests_change')
-#TODO solve out the specific field issue
+
+
+# TODO solve out the specific field issue
 class RequestUpdateDView(LoginRequiredMixin, UpdateView):
     model = Request
     template_name = 'dean_update.html'
     login_url = 'login'
+    fields = ('status',)
+
 
