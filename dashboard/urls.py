@@ -1,6 +1,5 @@
 from django.urls import path
 
-import dashboard
 from dashboard.views import home, RequestCreateView, RequestDetailView, RequestUpdateView, RequestDeleteView, \
     RequestListView, RequestDeanView, RequestDeleteDView, RequestUpdateDView
 

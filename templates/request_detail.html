@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
-{%  block content %}
-    <div >
-    <h2> {{request.title }}</h2>
-    <p>{{ request.description }}</p>
+{% block content %}
+
+
+    <div class="card">
+        <div class="card-header">
+            <h2> {{ request.title }}</h2>
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>Owner : {{ request.owner }}</p>
+                <p>Date : {{ request.date }}</p>
+                <p>Hour : {{ request.hour }}</p>
+                <p>Needs : {{ request.needs }}</p>
+                <p>Owner : {{ request.owner }}</p>
+                <p>Domain : {{ request.domain }}</p>
+                <p>Description : {{ request.description }}
+                <p>Status : {{ request.status }}</p>
+
+
+            </blockquote>
+        </div>
     </div>
+
 
 {% endblock content %}

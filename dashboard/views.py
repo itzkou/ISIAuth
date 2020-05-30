@@ -1,7 +1,5 @@
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, request
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse_lazy
@@ -140,11 +138,14 @@ class RequestDeleteDView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('requests_change')
 
 
-# TODO solve out the specific field issue
-class RequestUpdateDView(LoginRequiredMixin, UpdateView):
+class RequestUpdateDView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Request
     template_name = 'dean_update.html'
     login_url = 'login'
     fields = ('status',)
 
-
+    def test_func(self):
+        if self.request.user.is_dean:
+            return True
+        else:
+            return False

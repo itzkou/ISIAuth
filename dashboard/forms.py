@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
 from dashboard.models import User, Club
+
+
 #forms.py is where the django documentation recommends you place all your forms code;
 
 class DeanSignUpForm(UserCreationForm):
